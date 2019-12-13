@@ -267,8 +267,13 @@ find ::
   (a -> Bool) ->
   List a ->
   Optional a
-find =
-  error "todo: Course.List#find"
+find f = foldRight step Empty
+  where
+    step a possibleMatch =
+      case (f a, possibleMatch) of
+        (True, _) -> Full a
+        (_, Full x) -> Full x
+        (False, Empty) -> Empty
 
 -- | Determine if the length of the given list is greater than 4.
 --
